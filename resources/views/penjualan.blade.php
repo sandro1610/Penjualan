@@ -6,6 +6,8 @@
     <link href="{{ asset('vendor/bootstrap-select/dist/css/bootstrap-select.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.css"
         integrity="sha256-pODNVtK3uOhL8FUNWWvFQK0QoQoV3YA9wGGng6mbZ0E=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
+        
     <!-- AKHIR STYLE CSS -->
 
 @endsection
@@ -15,7 +17,11 @@
         <div class="card">
             <div class="card-body">
                 <!-- MULAI TOMBOL TAMBAH -->
+                <div class="row">
                 <a href="javascript:void(0)" class="btn btn-info" id="tombol-tambah">Tambah Penjualan</a>
+                &nbsp;
+                <a href="/penjualan/cetak_pdf" class="btn btn-primary" target="_blank">CETAK PDF</a>
+            </div>
                 <br><br>
                 <!-- AKHIR TOMBOL -->
                 <!-- MULAI TABLE -->
@@ -23,10 +29,9 @@
                     <table class="table table-striped table-bordered table-lg" id="table_penjualan">
                         <thead>
                             <tr>
-                                <th>Kode Produk</th>
+                                <th>No Produk</th>
                                 <th>Nama Produk</th>
                                 <th>Kardus</th>
-                                <th>Satuan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -59,7 +64,7 @@
                                     <div class="col-sm-12">
                                         <select class="selectpicker form-control" size="5" id="produk_id" name="produk_id"  data-live-search="true">
                                             @foreach ($produks as $produk) 
-                                            <option value="{{$produk -> id}}"  data-tokens="({{$produk -> kode_produk}}){{$produk -> nama_produk}}">({{$produk -> kode_produk}}){{$produk -> nama_produk}}</option>
+                                            <option value="{{$produk -> id}}"  data-tokens="({{$produk -> no_produk}}){{$produk -> nama_produk}}">({{$produk -> no_produk}}){{$produk -> nama_produk}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -72,15 +77,6 @@
                                             value="" required>
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="satuan" class="col-sm-12 control-label">Satuan</label>
-                                    <div class="col-sm-12">
-                                        <input type="number" class="form-control" id="satuan" name="satuan"
-                                            value="" required>
-                                    </div>
-                                </div>
-
                             </div>
 
                             <div class="col-sm-offset-2 col-sm-12">
@@ -126,6 +122,9 @@
 @endsection
 @section('script')
     <!-- LIBARARY JS -->
+    <script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
+<script src="/vendor/datatables/buttons.server-side.js"></script>
+
     <script type="text/javascript" language="javascript"
     src="{{ asset('vendor/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
     
@@ -177,8 +176,8 @@
                 },
                 columns: [
                     {
-                        data: 'kode_produk',
-                        name: 'kode_produk'
+                        data: 'no_produk',
+                        name: 'no_produk'
                     },
                     {
                         data: 'nama_produk',
@@ -187,10 +186,6 @@
                     {
                         data: 'kardus',
                         name: 'kardus'
-                    },
-                    {
-                        data: 'satuan',
-                        name: 'satuan'
                     },
                     {
                         data: 'action',
@@ -247,7 +242,6 @@
                 $('#id').val(data.id);
                 $('#produk_id').val(data.produk_id);
                 $('#kardus').val(data.kardus);
-                $('#satuan').val(data.satuan);
             })
         });
         //jika klik class delete (yang ada pada tombol delete) maka tampilkan modal konfirmasi hapus maka

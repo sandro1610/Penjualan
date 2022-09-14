@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Sistem Informasi Penjualan dan Stok</title>
+    <title>Aplikasi Data Penjualan dan Retur</title>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon icon -->
@@ -125,6 +125,7 @@
         ***********************************-->
         <div class="deznav">
             <div class="deznav-scroll">
+                @if (Auth::user()->level == 1)
                 <ul class="metismenu" id="menu">
                     <li><a class="ai-icon" href="/dashboard" aria-expanded="false">
                             <i class="flaticon-381-controls-3"></i>
@@ -147,6 +148,31 @@
                         </a>
                     </li>
                 </ul>
+                @endif
+                @if (Auth::user()->level == 2)
+                <ul class="metismenu" id="menu">
+                    <li><a class="ai-icon" href="{{ url('/dashboard') }}" aria-expanded="false">
+                            <i class="flaticon-381-controls-3"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li><a href="{{ url('pimpinan/penjualan') }}" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-381-network"></i>
+                            <span class="nav-text">Penjualan</span>
+                        </a>
+                    </li>
+                    <li><a href="{{ url('pimpinan/produk') }}" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-381-layer-1"></i>
+                            <span class="nav-text">Produk</span>
+                        </a>
+                    </li>
+                    <li><a href="{{ url('pimpinan/retur') }}" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-381-notepad"></i>
+                            <span class="nav-text">Retur</span>
+                        </a>
+                    </li>
+                </ul>
+                @endif
             </div>
         </div>
         <!--**********************************

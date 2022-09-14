@@ -19,7 +19,6 @@ return new class extends Migration
                     ->references('id')->on('produks')
                     ->onDelete('no action');
             $table->integer('kardus');
-            $table->integer('satuan');
             $table->timestamps();
         });
     }

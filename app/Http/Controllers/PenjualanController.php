@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Penjualan;
 use App\Models\Produk;
+use App\Models\Penjualan;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Html\Button;
+use PDF;
 
 class PenjualanController extends Controller
 {
@@ -28,7 +30,7 @@ class PenjualanController extends Controller
         $produks = Produk::all();
         $penjualans = Penjualan::LeftJoin("produks", function ($join) {
                       $join->on("produks.id", "=", "produk_id");
-                      })->select('penjualans.*', 'produks.nama_produk', 'produks.kode_produk')->orderBy('created_at', 'desc')->get();
+                      })->select('penjualans.*', 'produks.nama_produk', 'produks.no_produk')->orderBy('created_at', 'desc')->get();
         if($request->ajax()){
             return datatables()->of($penjualans)
                         ->addColumn('action', function($data){
@@ -40,6 +42,31 @@ class PenjualanController extends Controller
                         ->make(true);
         }
         return view('penjualan', ['produks' => $produks]);
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function pimpinan(Request $request)
+    {
+        $produks = Produk::all();
+        $penjualans = Penjualan::LeftJoin("produks", function ($join) {
+                      $join->on("produks.id", "=", "produk_id");
+                      })->select('penjualans.*', 'produks.nama_produk', 'produks.no_produk')->orderBy('created_at', 'desc')->get();
+        if($request->ajax()){
+            return datatables()->of($penjualans)
+                        ->addColumn('action', function($data){
+                            $button = '<button type="button" name="delete" id="'.$data->id.'" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i> Delete</button>';     
+                            return $button;
+                        })
+                        ->rawColumns(['action'])
+                        ->addIndexColumn()
+                        ->make(true);
+        }
+        return view('pimpinan.penjualan', ['produks' => $produks]);
     }
 
 
@@ -57,7 +84,6 @@ class PenjualanController extends Controller
                     [
                         'produk_id' => $request->produk_id,
                         'kardus' => $request->kardus,
-                        'satuan' => $request->satuan,
                     ]);
         // if (!empty($request->id)) {
             // $penjualan = Penjualan::findOrFail($request->id);
@@ -78,7 +104,7 @@ class PenjualanController extends Controller
         // }elseif (empty($request->id)) {
             $produk = Produk::findOrFail($request->produk_id);
             $produk->stok_kardus -= $request->kardus;
-            $produk->stok_satuan -= $request->satuan;
+            $produk->terjual += $request->kardus;
             $produk->save();
         // }
 
@@ -109,11 +135,21 @@ class PenjualanController extends Controller
         $penjualan = Penjualan::findOrFail($id);
         $produk = Produk::findOrFail($penjualan->produk_id);
         $produk->stok_kardus += $penjualan->kardus;
-        $produk->stok_satuan += $penjualan->satuan;
+        $produk->terjual -= $penjualan->kardus;
         $produk->save();
         
         $post = Penjualan::where('id',$id)->delete();
      
         return response()->json($post);
+    }
+    
+    public function cetak_pdf()
+    {
+    	$penjualan = Penjualan::LeftJoin("produks", function ($join) {
+            $join->on("produks.id", "=", "produk_id");
+            })->select('penjualans.*', 'produks.nama_produk', 'produks.no_produk')->orderBy('created_at', 'desc')->get();
+
+    	$pdf = PDF::loadview('cetakPenjualan',['penjualan'=>$penjualan]);
+    	return $pdf->stream();
     }
 }

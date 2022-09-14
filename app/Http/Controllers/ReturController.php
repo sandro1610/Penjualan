@@ -28,7 +28,7 @@ class ReturController extends Controller
         $produks = Produk::all();
         $returs = Retur::LeftJoin("produks", function ($join) {
                   $join->on("produks.id", "=", "produk_id");
-                  })->select('returs.*', 'produks.nama_produk', 'produks.kode_produk')->orderBy('created_at', 'desc')->get();
+                  })->select('returs.*', 'produks.nama_produk', 'produks.no_produk')->orderBy('created_at', 'desc')->get();
         if($request->ajax()){
             return datatables()->of($returs)
                         ->addColumn('action', function($data){
@@ -41,7 +41,34 @@ class ReturController extends Controller
                         ->addIndexColumn()
                         ->make(true);
         }
-        return view('Retur', ['produks' => $produks]);
+        return view('retur', ['produks' => $produks]);
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function pimpinan(Request $request)
+    {   
+        $produks = Produk::all();
+        $returs = Retur::LeftJoin("produks", function ($join) {
+                  $join->on("produks.id", "=", "produk_id");
+                  })->select('returs.*', 'produks.nama_produk', 'produks.no_produk')->orderBy('created_at', 'desc')->get();
+        if($request->ajax()){
+            return datatables()->of($returs)
+                        ->addColumn('action', function($data){
+                            $button = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->id.'" data-original-title="Edit" class="edit btn btn-info btn-sm edit-post">Edit</a>';
+                            $button .= '&nbsp;&nbsp;';
+                            $button .= '<button type="button" name="delete" id="'.$data->id.'" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i> Delete</button>';     
+                            return $button;
+                        })
+                        ->rawColumns(['action'])
+                        ->addIndexColumn()
+                        ->make(true);
+        }
+        return view('pimpinan.retur', ['produks' => $produks]);
     }
 
 
@@ -59,7 +86,6 @@ class ReturController extends Controller
                     [
                         'produk_id' => $request->produk_id,
                         'kardus' => $request->kardus,
-                        'satuan' => $request->satuan,
                     ]); 
 
         return response()->json($post);

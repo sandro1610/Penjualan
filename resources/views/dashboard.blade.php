@@ -3,6 +3,7 @@
 @section('style')
     <link href="./vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./vendor/chartist/css/chartist.min.css">
+    <link href="{{ asset('vendor/bootstrap-select/dist/css/bootstrap-select.min.css') }}" rel="stylesheet">
 @endsection
 @section('content')
     {{-- Card Atas --}}
@@ -16,157 +17,299 @@
                     <div class="card-body pt-0">
                         <div class="row align-items-center">
                             <div class="col-lg-4 mb-lg-0 mb-4 text-center">
-                                <h2>{{$penjualans}}</h2>
-                                <h2>Transaksi</h2>
+                                @foreach ($penjualans as $penjualan)
+                                    <h2>{{ $penjualan->sum_terjual }}</h2>
+                                @endforeach
+                                <h2>Barang</h2>
                             </div>
                             <div class="col-lg-8">
                                 <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="d-flex align-items-center mb-sm-5 mb-3">
-                                            <div class="d-inline-block relative donut-chart-sale mr-3">
-                                                <span class="donut"
-                                                    data-peity='{ "fill": ["rgb(160, 44, 250)", "rgba(236, 236, 236, 1)"],   "innerRadius": 34, "radius": 10}'>
-                                                    <div class="col-sm-5"></div>
-                                                </span>
-                                                <small>
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <g clip-path="url(#clip3)">
-                                                            <path
-                                                                d="M0.988957 17.0741C0.328275 17.2007 -0.104585 17.8386 0.0219821 18.4993C0.133361 19.0815 0.644693 19.4865 1.21678 19.4865C1.29272 19.4865 1.37119 19.4789 1.44713 19.4637L6.4592 18.5018C6.74524 18.4461 7.0009 18.2917 7.18316 18.0639L9.33481 15.3503L8.61593 14.9832C8.08435 14.7149 7.71474 14.2289 7.58818 13.6391L5.55804 16.1983L0.988957 17.0741Z"
-                                                                fill="#A02CFA" />
-                                                            <path
-                                                                d="M18.84 6.49306C20.3135 6.49306 21.508 5.29854 21.508 3.82502C21.508 2.3515 20.3135 1.15698 18.84 1.15698C17.3665 1.15698 16.1719 2.3515 16.1719 3.82502C16.1719 5.29854 17.3665 6.49306 18.84 6.49306Z"
-                                                                fill="#A02CFA" />
-                                                            <path
-                                                                d="M13.0179 3.15677C12.7369 2.8682 12.4762 2.75428 12.1902 2.75428C12.0864 2.75428 11.9826 2.76947 11.8712 2.79479L7.29203 3.88073C6.6592 4.03008 6.26937 4.66545 6.41872 5.29576C6.54782 5.83746 7.02877 6.20198 7.56289 6.20198C7.65404 6.20198 7.74514 6.19185 7.8363 6.16907L11.7371 5.24513C11.9902 5.52611 13.2584 6.90063 13.4888 7.14364C11.8763 8.87002 10.2639 10.5939 8.65137 12.3202C8.62605 12.3481 8.60329 12.3759 8.58049 12.4038C8.10966 13.0037 8.25397 13.9454 8.96275 14.3023L13.9064 16.826L11.3397 20.985C10.9878 21.5571 11.165 22.3064 11.7371 22.6608C11.9371 22.7848 12.1573 22.843 12.375 22.843C12.7825 22.843 13.1824 22.638 13.4128 22.2659L16.6732 16.983C16.8529 16.6919 16.901 16.34 16.8074 16.0135C16.7137 15.6844 16.4884 15.411 16.1821 15.2566L12.8331 13.553L16.3543 9.78636L19.0122 12.0393C19.2324 12.2266 19.5032 12.3177 19.7716 12.3177C20.0601 12.3177 20.3487 12.2114 20.574 12.0038L23.6243 9.16112C24.1002 8.71814 24.128 7.97392 23.685 7.49803C23.4521 7.24996 23.1383 7.12339 22.8244 7.12339C22.5383 7.12339 22.2497 7.22717 22.0245 7.43728L19.7412 9.56107C19.7386 9.56361 14.0178 4.18196 13.0179 3.15677Z"
-                                                                fill="#A02CFA" />
-                                                        </g>
-                                                        <defs>
-                                                            <clipPath id="clip3">
-                                                                <rect width="24" height="24" fill="white" />
-                                                            </clipPath>
-                                                        </defs>
-                                                    </svg>
-                                                </small>
-                                            </div>
-                                            <div>
-                                                <h4 class="fs-18 text-black">Running (45%)</h4>
-                                                <span>45km/100km</span>
+                                        @foreach ($produk_jeniss as $produk_jenis)
+                                            @php
+                                                if ($produk_jenis->id_jenis == 1) {
+                                                    $jenis = 'Kebutuhan bayi';
+                                                } elseif ($produk_jenis->id_jenis == 2) {
+                                                    $jenis = 'Makanan ringan';
+                                                } elseif ($produk_jenis->id_jenis == 3) {
+                                                    $jenis = 'Makanan instan';
+                                                } elseif ($produk_jenis->id_jenis == 4) {
+                                                    $jenis = 'Minuman';
+                                                } elseif ($produk_jenis->id_jenis == 5) {
+                                                    $jenis = 'Kebutuhan Pokok';
+                                                }
+                                            @endphp
+                                        <div class="col-sm-6">
+                                            <div class="d-flex align-items-center mb-sm-0 mb-3">
+                                                <div>
+                                                    <h4 class="fs-18 text-black">{{ $jenis }}</h4>
+                                                    <span>{{ $produk_jenis->sum_terjual }}</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="d-flex align-items-center mb-sm-5 mb-3">
-                                            <div class="d-inline-block relative donut-chart-sale mr-3">
-                                                <span class="donut"
-                                                    data-peity='{ "fill": ["rgb(255, 188, 17)", "rgba(236, 236, 236, 1)"],   "innerRadius": 34, "radius": 10}'>
-                                                    <div class="col-sm-5"></div>
-                                                </span>
-                                                <small>
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <g clip-path="url(#clip4)">
-                                                            <path
-                                                                d="M11.9995 5.9999C13.6563 5.9999 14.9994 4.65677 14.9994 2.99995C14.9994 1.34312 13.6563 1.61033e-07 11.9995 1.41496e-07C10.3426 1.21959e-07 8.99953 1.34312 8.99953 2.99995C8.99953 4.65677 10.3426 5.9999 11.9995 5.9999Z"
-                                                                fill="#FFBC11" />
-                                                            <path
-                                                                d="M17.8302 21.8297L14.1358 23.2153L15.973 23.9042C16.7637 24.1978 17.6168 23.791 17.9044 23.0261C18.0574 22.618 18.0121 22.1905 17.8302 21.8297Z"
-                                                                fill="#FFBC11" />
-                                                            <path
-                                                                d="M5.0265 16.5949C4.25236 16.3078 3.38663 16.6974 3.09516 17.473C2.80439 18.2486 3.19772 19.1128 3.97327 19.4043L5.59153 20.0111L9.86385 18.4088L5.0265 16.5949Z"
-                                                                fill="#FFBC11" />
-                                                            <path
-                                                                d="M20.9043 17.473C20.6127 16.6974 19.7471 16.3078 18.9729 16.5949L6.97318 21.0948C6.19754 21.3863 5.80426 22.2505 6.09502 23.0262C6.38251 23.7908 7.23544 24.198 8.02636 23.9043L20.0261 19.4044C20.8018 19.1129 21.1951 18.2487 20.9043 17.473Z"
-                                                                fill="#FFBC11" />
-                                                            <path
-                                                                d="M22.4995 11.9998L18.9268 11.9998L16.3414 6.82899C16.0728 6.29213 15.5262 5.98627 14.9629 5.99991L11.9995 5.9999L9.03636 5.99991C8.47316 5.98627 7.9273 6.29217 7.658 6.82899L5.07262 11.9998L1.49995 11.9998C0.671624 11.9998 -1.49419e-07 12.6714 -1.59186e-07 13.4997C-1.68954e-07 14.328 0.671624 14.9997 1.49995 14.9997L5.99985 14.9997C6.56821 14.9997 7.08749 14.6789 7.3416 14.1706L8.99975 10.8543L8.99975 16.483L11.9996 17.6079L14.9996 16.4827L14.9996 10.8543L16.6578 14.1706C16.912 14.6789 17.4312 14.9997 17.9995 14.9997L22.4994 14.9997C23.3278 14.9997 23.9994 14.328 23.9994 13.4997C23.9994 12.6714 23.3278 11.9998 22.4995 11.9998Z"
-                                                                fill="#FFBC11" />
-                                                        </g>
-                                                        <defs>
-                                                            <clipPath id="clip4">
-                                                                <rect width="24" height="24" fill="white"
-                                                                    transform="translate(-0.000244141)" />
-                                                            </clipPath>
-                                                        </defs>
-                                                    </svg>
-                                                </small>
-                                            </div>
-                                            <div>
-                                                <h4 class="fs-18 text-black">Yoga (78%)</h4>
-                                                <span>56min/1hr</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="d-flex align-items-center mb-sm-0 mb-3">
-                                            <div class="d-inline-block relative donut-chart-sale mr-3">
-                                                <span class="donut"
-                                                    data-peity='{ "fill": ["rgb(255, 50, 130)", "rgba(236, 236, 236, 1)"],   "innerRadius": 34, "radius": 10}'>
-                                                    <div class="col-sm-5"></div>
-                                                </span>
-                                                <small>
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <g clip-path="url(#clip5)">
-                                                            <path
-                                                                d="M10.8586 5.22596L5.87121 10.5542C5.50758 11.0845 5.64394 11.8068 6.17172 12.1679L11.1945 15.6098L11.1945 18.9558C11.1945 19.5921 11.6995 20.125 12.3359 20.1376C12.9874 20.1477 13.5177 19.6249 13.5177 18.976L13.5177 15.0012C13.5177 14.6174 13.3283 14.2588 13.0126 14.0442L9.79041 11.8346L12.5025 8.95833L13.8914 12.1225C14.0758 12.5442 14.4949 12.8169 14.9546 12.8169L19.1844 12.8169C19.8207 12.8169 20.3536 12.3119 20.3662 11.6755C20.3763 11.024 19.8536 10.4937 19.2046 10.4937L15.7172 10.4937C15.2576 9.44821 14.7677 8.41285 14.3409 7.35225C14.1237 6.81689 14.0025 6.58457 13.6036 6.21588C13.5227 6.14013 12.9596 5.62498 12.4571 5.16538C11.995 4.74616 11.2828 4.77394 10.8586 5.22596Z"
-                                                                fill="#FF3282" />
-                                                            <path
-                                                                d="M15.6162 5.80678C17.0861 5.80678 18.2778 4.61514 18.2778 3.14517C18.2778 1.6752 17.0861 0.483551 15.6162 0.483551C14.1462 0.483551 12.9545 1.6752 12.9545 3.14517C12.9545 4.61514 14.1462 5.80678 15.6162 5.80678Z"
-                                                                fill="#FF3282" />
-                                                            <path
-                                                                d="M4.89899 23.5164C7.60463 23.5164 9.79798 21.323 9.79798 18.6174C9.79798 15.9117 7.60463 13.7184 4.89899 13.7184C2.19335 13.7184 -1.81927e-07 15.9117 -2.13831e-07 18.6174C-2.45735e-07 21.323 2.19335 23.5164 4.89899 23.5164Z"
-                                                                fill="#FF3282" />
-                                                            <path
-                                                                d="M19.101 23.5164C21.8066 23.5164 24 21.323 24 18.6174C24 15.9118 21.8066 13.7184 19.101 13.7184C16.3954 13.7184 14.202 15.9118 14.202 18.6174C14.202 21.323 16.3954 23.5164 19.101 23.5164Z"
-                                                                fill="#FF3282" />
-                                                        </g>
-                                                        <defs>
-                                                            <clipPath id="clip5">
-                                                                <rect width="24" height="24" fill="white" />
-                                                            </clipPath>
-                                                        </defs>
-                                                    </svg>
-                                                </small>
-                                            </div>
-                                            <div>
-                                                <h4 class="fs-18 text-black">Cycling (66%)</h4>
-                                                <span>69km/20km</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="d-flex align-items-center mb-sm-0 mb-3">
-                                            <div class="d-inline-block relative donut-chart-sale mr-3">
-                                                <span class="donut"
-                                                    data-peity='{ "fill": ["rgb(130, 190, 101)", "rgba(236, 236, 236, 1)"],   "innerRadius": 34, "radius": 10}'>
-                                                    <div class="col-sm-5"></div>
-                                                </span>
-                                                <small>
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <g clip-path="url(#clip8)">
-                                                            <path
-                                                                d="M22.2363 3.06982C22.0806 2.91507 21.8978 2.83724 21.6855 2.83724C21.58 2.83724 21.3576 2.92382 21.0205 3.09469C20.682 3.26601 20.3218 3.45668 19.9442 3.66945C19.5651 3.88084 19.1166 4.07243 18.5985 4.24375C18.0813 4.41461 17.6028 4.5012 17.162 4.5012C16.7544 4.5012 16.3961 4.42382 16.0862 4.26862C15.0596 3.78781 14.1662 3.42904 13.4086 3.19232C12.6505 2.95606 11.8353 2.83724 10.9626 2.83724C9.45569 2.83724 7.73923 3.32726 5.81506 4.30546C5.41807 4.5035 5.13346 4.65686 4.94924 4.76923L4.7664 3.42858C5.17951 3.06982 5.44617 2.5471 5.44617 1.95714C5.44617 0.876234 4.57021 0.000274694 3.48931 0.000274681C2.4084 0.000274669 1.53198 0.876234 1.53198 1.95714C1.53198 2.66223 1.90871 3.27522 2.46781 3.61971L5.11135 23.0041C5.1901 23.5812 5.68381 23.9998 6.25074 23.9998C6.30232 23.9998 6.35482 23.9957 6.40779 23.9901C7.03782 23.9036 7.47902 23.3237 7.3929 22.6937L6.33042 14.9031C8.25826 13.9465 9.9259 13.4644 11.3287 13.4644C11.9242 13.4644 12.505 13.5523 13.071 13.7329C13.6374 13.9129 14.109 14.1073 14.4835 14.3187C14.8574 14.531 15.3 14.7272 15.8098 14.9054C16.3197 15.085 16.823 15.1748 17.32 15.1748C18.5754 15.1748 20.0782 14.7018 21.8315 13.7563C22.0516 13.6421 22.2124 13.5297 22.3146 13.4201C22.4168 13.3101 22.4675 13.153 22.4675 12.9499L22.4675 3.62017C22.4675 3.40878 22.3906 3.22502 22.2363 3.06982Z"
-                                                                fill="#67BE65" />
-                                                        </g>
-                                                        <defs>
-                                                            <clipPath id="clip8">
-                                                                <rect width="24" height="24" fill="white" />
-                                                            </clipPath>
-                                                        </defs>
-                                                    </svg>
-                                                </small>
-                                            </div>
-                                            <div>
-                                                <h4 class="fs-18 text-black">Weekly Goals</h4>
-                                                <span>245/500</span>
-                                            </div>
-                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header flex-wrap border-0 pb-0">
+                        <h1 class="text-black fs-20 mb-3">Chart produk</h1>
+                    </div>
+                    <div class="card-body pt-0">
+
+                        <div class="row align-items-center">
+                            <div class="col-md-5 col-md-offset-1">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><b>Chart Kebutuhan Bayi Penjualan Tinggi</b></div>
+                                    <div class="panel-body">
+                                        <canvas id="chart1C1" height="280" width="600"></canvas>
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-5 col-md-offset-1">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><b>Chart Kebutuhan Bayi Penjualan Rendah</b></div>
+                                    <div class="panel-body">
+                                        <canvas id="chart1C2" height="280" width="600"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center">
+                            <div class="col-md-5 col-md-offset-1">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><b>Chart Makanan Ringan Penjualan Tinggi</b></div>
+                                    <div class="panel-body">
+                                        <canvas id="chart2C1" height="280" width="600"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-md-offset-1">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><b>Chart Makanan Ringan Penjualan Rendah</b></div>
+                                    <div class="panel-body">
+                                        <canvas id="chart2C2" height="280" width="600"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center">
+                            <div class="col-md-5 col-md-offset-1">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><b>Chart Makanan Instan Penjualan Tinggi</b></div>
+                                    <div class="panel-body">
+                                        <canvas id="chart3C1" height="280" width="600"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-md-offset-1">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><b>Chart Makanan Instan Penjualan Rendah</b></div>
+                                    <div class="panel-body">
+                                        <canvas id="chart3C2" height="280" width="600"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center">
+                            <div class="col-md-5 col-md-offset-1">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><b>Chart Minuman Penjualan Tinggi</b></div>
+                                    <div class="panel-body">
+                                        <canvas id="chart4C1" height="280" width="600"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-md-offset-1">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><b>Chart Minuman Penjualan Rendah</b></div>
+                                    <div class="panel-body">
+                                        <canvas id="chart4C2" height="280" width="600"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center">
+                            <div class="col-md-5 col-md-offset-1">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><b>Chart Kebutuhan Pokok Penjualan Tinggi</b></div>
+                                    <div class="panel-body">
+                                        <canvas id="chart5C1" height="280" width="600"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-md-offset-1">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><b>Chart Kebutuhan Pokok Penjualan Rendah</b></div>
+                                    <div class="panel-body">
+                                        <canvas id="chart5C2" height="280" width="600"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header flex-wrap border-0 pb-0">
+                        <h1 class="text-black fs-20 mb-3">Clusttering produk</h1>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="row align-items-center">
+                            <form class="" action="/hitung" method="get">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="c1" class="col-sm-12 control-label">C1</label>
+                                        <div class="col-sm-12">
+                                            <select required class="selectpicker form-control" size="5" id="c1"
+                                                name="c1" data-live-search="true">
+                                                @foreach ($produks as $produk)
+                                                    <option value="{{ $produk->id }}"
+                                                        data-tokens="{{ $produk->nama_produk }}">
+                                                        {{ $produk->nama_produk }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="c2" class="col-sm-12 control-label">C2</label>
+                                        <div class="col-sm-12">
+                                            <select required class="selectpicker form-control" size="5" id="c2"
+                                                name="c2" data-live-search="true">
+                                                @foreach ($produks as $produk)
+                                                    <option value="{{ $produk->id }}"
+                                                        data-tokens="{{ $produk->nama_produk }}">
+                                                        {{ $produk->nama_produk }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-offset-2 col-sm-12">
+                                        <button type="submit" class="btn btn-primary btn-block" id="tombol-simpan"
+                                            value="create">Run
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header flex-wrap border-0 pb-0">
+                        <h1 class="text-black fs-20 mb-3">Data produk</h1>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="row align-items-center">
+                            <table class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>No Produk</th>
+                                        <th>Jenis Produk</th>
+                                        <th>Nama Produk</th>
+                                        <th>Stok Awal</th>
+                                        <th>Terjual</th>
+                                        <th>Stok Akhir</th>
+                                        <th>Cluster</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($tampil_produk_tinggi as $produk_tinggi)
+                                        <tr>
+                                            @php
+                                                if ($produk_tinggi->id_jenis == 1) {
+                                                    $jenis = 'Kebutuhan bayi';
+                                                } elseif ($produk_tinggi->id_jenis == 2) {
+                                                    $jenis = 'Makanan ringan';
+                                                } elseif ($produk_tinggi->id_jenis == 3) {
+                                                    $jenis = 'Makanan instan';
+                                                } elseif ($produk_tinggi->id_jenis == 4) {
+                                                    $jenis = 'Minuman';
+                                                } elseif ($produk_tinggi->id_jenis == 5) {
+                                                    $jenis = 'Kebutuhan Pokok';
+                                                }
+                                            @endphp
+                                            @php
+                                                if ($produk_tinggi->cluster == 'C1') {
+                                                    $clus = 'Penjualan Tinggi';
+                                                } elseif ($produk_tinggi->cluster == 'C2') {
+                                                    $clus = 'Penjualan Rendah';
+                                                }
+                                            @endphp
+                                            <td>{{ $produk_tinggi->nama_produk }}</td>
+                                            <td>{{ $jenis }}</td>
+                                            <td>{{ $produk_tinggi->nama_produk }}</td>
+                                            <td>{{ $produk_tinggi->stok_awal }}</td>
+                                            <td>{{ $produk_tinggi->terjual }}</td>
+                                            <td>{{ $produk_tinggi->stok_kardus }}</td>
+                                            <td>{{ $clus }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <table class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>No Produk</th>
+                                        <th>Jenis Produk</th>
+                                        <th>Nama Produk</th>
+                                        <th>Stok Awal</th>
+                                        <th>Terjual</th>
+                                        <th>Stok Akhir</th>
+                                        <th>Cluster</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($tampil_produk_rendah as $produk_rendah)
+                                        <tr>
+                                            @php
+                                                if ($produk_rendah->id_jenis == 1) {
+                                                    $jenis = 'Kebutuhan bayi';
+                                                } elseif ($produk_rendah->id_jenis == 2) {
+                                                    $jenis = 'Makanan ringan';
+                                                } elseif ($produk_rendah->id_jenis == 3) {
+                                                    $jenis = 'Makanan instan';
+                                                } elseif ($produk_rendah->id_jenis == 4) {
+                                                    $jenis = 'Minuman';
+                                                } elseif ($produk_rendah->id_jenis == 5) {
+                                                    $jenis = 'Kebutuhan Pokok';
+                                                }
+                                            @endphp
+                                            @php
+                                                if ($produk_rendah->cluster == 'C1') {
+                                                    $clus = 'Penjualan Tinggi';
+                                                } elseif ($produk_rendah->cluster == 'C2') {
+                                                    $clus = 'Penjualan Rendah';
+                                                }
+                                            @endphp
+                                            <td>{{ $produk_rendah->nama_produk }}</td>
+                                            <td>{{ $jenis }}</td>
+                                            <td>{{ $produk_rendah->nama_produk }}</td>
+                                            <td>{{ $produk_rendah->stok_awal }}</td>
+                                            <td>{{ $produk_rendah->terjual }}</td>
+                                            <td>{{ $produk_rendah->stok_kardus }}</td>
+                                            <td>{{ $clus }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -179,6 +322,8 @@
     {{-- Akhir Tabel --}}
 @endsection
 @section('script')
+    <script type="text/javascript" language="javascript"
+        src="{{ asset('vendor/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
     <!-- Chart piety plugin files -->
     <script src="./vendor/peity/jquery.peity.min.js"></script>
 
@@ -187,4 +332,400 @@
 
     <!-- Dashboard 1 -->
     <script src="./js/dashboard/workout-statistic.js"></script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js" charset="utf-8"></script>
+
+
+<script>
+    var url1C1 = "{{ route('chart1C1') }}";
+    var NoProduk1C1 = new Array();
+    var Terjual1C1 = new Array();
+    $(document).ready(function () {
+        $.get(url1C1, function (response) {
+            response.forEach(function (data) {
+                NoProduk1C1.push(data.nama_produk);
+                Terjual1C1.push(data.terjual);
+            });
+            var ctx = document.getElementById("chart1C1").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: NoProduk1C1,
+                    datasets: [{
+                        label: 'Jumlah yang terjual',
+                        data: Terjual1C1,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                display: false //this will remove only the label
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    });
+
+    var url1C2 = "{{ route('chart1C2') }}";
+    var NoProduk1C2 = new Array();
+    var Terjual1C2 = new Array();
+    var NamaProduk1C2 = new Array();
+    $(document).ready(function () {
+        $.get(url1C2, function (response) {
+            response.forEach(function (data) {
+                NoProduk1C2.push(data.nama_produk);
+                Terjual1C2.push(data.terjual);
+                NamaProduk1C2.push(data.nama_produk);
+            });
+            var ctx = document.getElementById("chart1C2").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: NamaProduk1C2,
+                    datasets: [{
+                        label: 'Jumlah yang terjual',
+                        data: Terjual1C2,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                display: false //this will remove only the label
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    var url2C1 = "{{ route('chart2C1') }}";
+    var NoProduk2C1 = new Array();
+    var Terjual2C1 = new Array();
+    $(document).ready(function () {
+        $.get(url2C1, function (response) {
+            response.forEach(function (data) {
+                NoProduk2C1.push(data.nama_produk);
+                Terjual2C1.push(data.terjual);
+            });
+            var ctx = document.getElementById("chart2C1").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: NoProduk2C1,
+                    datasets: [{
+                        label: 'Jumlah yang terjual',
+                        data: Terjual2C1,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                display: false //this will remove only the label
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    });
+
+    var url2C2 = "{{ route('chart2C2') }}";
+    var NoProduk2C2 = new Array();
+    var Terjual2C2 = new Array();
+    $(document).ready(function () {
+        $.get(url2C2, function (response) {
+            response.forEach(function (data) {
+                NoProduk2C2.push(data.nama_produk);
+                Terjual2C2.push(data.terjual);
+            });
+            var ctx = document.getElementById("chart2C2").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: NoProduk2C2,
+                    datasets: [{
+                        label: 'Jumlah yang terjual',
+                        data: Terjual2C2,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                display: false //this will remove only the label
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    var url3C1 = "{{ route('chart3C1') }}";
+    var NoProduk3C1 = new Array();
+    var Terjual3C1 = new Array();
+    $(document).ready(function () {
+        $.get(url3C1, function (response) {
+            response.forEach(function (data) {
+                NoProduk3C1.push(data.nama_produk);
+                Terjual3C1.push(data.terjual);
+            });
+            var ctx = document.getElementById("chart3C1").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: NoProduk3C1,
+                    datasets: [{
+                        label: 'Jumlah yang terjual',
+                        data: Terjual3C1,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                display: false //this will remove only the label
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    });
+
+    var url3C2 = "{{ route('chart3C2') }}";
+    var NoProduk3C2 = new Array();
+    var Terjual3C2 = new Array();
+    $(document).ready(function () {
+        $.get(url3C2, function (response) {
+            response.forEach(function (data) {
+                NoProduk3C2.push(data.nama_produk);
+                Terjual3C2.push(data.terjual);
+            });
+            var ctx = document.getElementById("chart3C2").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: NoProduk3C2,
+                    datasets: [{
+                        label: 'Jumlah yang terjual',
+                        data: Terjual3C2,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                display: false //this will remove only the label
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    var url4C1 = "{{ route('chart4C1') }}";
+    var NoProduk4C1 = new Array();
+    var Terjual4C1 = new Array();
+    $(document).ready(function () {
+        $.get(url4C1, function (response) {
+            response.forEach(function (data) {
+                NoProduk4C1.push(data.nama_produk);
+                Terjual4C1.push(data.terjual);
+            });
+            var ctx = document.getElementById("chart4C1").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: NoProduk4C1,
+                    datasets: [{
+                        label: 'Jumlah yang terjual',
+                        data: Terjual4C1,
+                        borderWidth: 1
+                    }],
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                display: false //this will remove only the label
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    });
+
+    var url4C2 = "{{ route('chart4C2') }}";
+    var NoProduk4C2 = new Array();
+    var Terjual4C2 = new Array();
+    $(document).ready(function () {
+        $.get(url4C2, function (response) {
+            response.forEach(function (data) {
+                NoProduk4C2.push(data.nama_produk);
+                Terjual4C2.push(data.terjual);
+            });
+            var ctx = document.getElementById("chart4C2").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: NoProduk4C2,
+                    datasets: [{
+                        label: 'Jumlah yang terjual',
+                        data: Terjual4C2,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                display: false //this will remove only the label
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    var url5C1 = "{{ route('chart5C1') }}";
+    var NoProduk5C1 = new Array();
+    var Terjual5C1 = new Array();
+    $(document).ready(function () {
+        $.get(url5C1, function (response) {
+            response.forEach(function (data) {
+                NoProduk5C1.push(data.nama_produk);
+                Terjual5C1.push(data.terjual);
+            });
+            var ctx = document.getElementById("chart5C1").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: NoProduk5C1,
+                    datasets: [{
+                        label: 'Jumlah yang terjual',
+                        data: Terjual5C1,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                display: false //this will remove only the label
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    });
+
+    var url5C2 = "{{ route('chart5C2') }}";
+    var NoProduk5C2 = new Array();
+    var Terjual5C2 = new Array();
+    $(document).ready(function () {
+        $.get(url5C2, function (response) {
+            response.forEach(function (data) {
+                NoProduk5C2.push(data.nama_produk);
+                Terjual5C2.push(data.terjual);
+            });
+            var ctx = document.getElementById("chart5C2").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: NoProduk5C2,
+                    datasets: [{
+                        label: 'Jumlah yang terjual',
+                        data: Terjual5C2,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                display: false //this will remove only the label
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    });
+</script>
+
 @endsection

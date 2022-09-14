@@ -16,10 +16,11 @@ return new class extends Migration
         Schema::create('produks', function (Blueprint $table) {
             $table->id();
             $table->integer('no_produk');
-            $table->char('kode_produk',25);
+            $table->integer('id_jenis');
             $table->string('nama_produk');
+            $table->integer('stok_awal');
+            $table->integer('terjual');
             $table->integer('stok_kardus');
-            $table->integer('stok_satuan');
             $table->timestamps();
         });
     }

@@ -23,10 +23,9 @@
                     <table class="table table-striped table-bordered table-lg" id="table_retur">
                         <thead>
                             <tr>
-                                <th>Kode Produk</th>
+                                <th>No Produk</th>
                                 <th>Nama Produk</th>
                                 <th>Kardus</th>
-                                <th>Satuan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -59,7 +58,7 @@
                                     <div class="col-sm-12">
                                         <select class="selectpicker form-control" size="5" id="produk_id" name="produk_id"  data-live-search="true">
                                             @foreach ($produks as $produk) 
-                                            <option value="{{$produk -> id}}"  data-tokens="({{$produk -> kode_produk}}){{$produk -> nama_produk}}">({{$produk -> kode_produk}}){{$produk -> nama_produk}}</option>
+                                            <option value="{{$produk -> id}}"  data-tokens="({{$produk -> no_produk}}){{$produk -> nama_produk}}">({{$produk -> no_produk}}){{$produk -> nama_produk}}</option>
                                             @endforeach
                                         </select>                                          
                                     </div>
@@ -69,14 +68,6 @@
                                     <label for="kardus" class="col-sm-12 control-label">Kardus</label>
                                     <div class="col-sm-12">
                                         <input type="number" class="form-control" id="kardus" name="kardus"
-                                            value="" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="satuan" class="col-sm-12 control-label">Satuan</label>
-                                    <div class="col-sm-12">
-                                        <input type="number" class="form-control" id="satuan" name="satuan"
                                             value="" required>
                                     </div>
                                 </div>
@@ -176,8 +167,8 @@
                     type: 'GET'
                 },
                 columns: [{
-                        data: 'kode_produk',
-                        name: 'kode_produk'
+                        data: 'no_produk',
+                        name: 'no_produk'
                     },
                     {
                         data: 'nama_produk',
@@ -186,10 +177,6 @@
                     {
                         data: 'kardus',
                         name: 'kardus'
-                    },
-                    {
-                        data: 'satuan',
-                        name: 'satuan'
                     },
                     {
                         data: 'action',
@@ -246,7 +233,6 @@
                 $('#id').val(data.id);
                 $('#produk_id').val(data.produk_id);
                 $('#kardus').val(data.kardus);
-                $('#satuan').val(data.satuan);
             })
         });
         //jika klik class delete (yang ada pada tombol delete) maka tampilkan modal konfirmasi hapus maka

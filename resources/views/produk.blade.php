@@ -3,7 +3,7 @@
 @section('style')
     <!-- MULAI STYLE CSS -->
     <link rel="stylesheet" href="{{ asset('vendor/datatables/css/jquery.dataTables.min.css') }}">
-
+    <link href="{{ asset('vendor/bootstrap-select/dist/css/bootstrap-select.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.css"
         integrity="sha256-pODNVtK3uOhL8FUNWWvFQK0QoQoV3YA9wGGng6mbZ0E=" crossorigin="anonymous" />
     <!-- AKHIR STYLE CSS -->
@@ -14,8 +14,11 @@
     <div class="col-lg-10">
         <div class="card">
             <div class="card-body">
-                <!-- MULAI TOMBOL TAMBAH -->
-                <a href="javascript:void(0)" class="btn btn-info" id="tombol-tambah">Tambah Produk</a>
+                <!-- MULAI TOMBOL TAMBAH --><div class="row">
+                <a href="javascript:void(0)" class="btn btn-info" id="tombol-tambah">Tambah Penjualan</a>
+                &nbsp;
+                <a href="/produk/cetak_pdf" class="btn btn-primary" target="_blank">CETAK PDF</a>
+            </div>
                 <br><br>
                 <!-- AKHIR TOMBOL -->
                 <!-- MULAI TABLE -->
@@ -24,10 +27,12 @@
                         <thead>
                             <tr>
                                 <th>No Produk</th>
+                                <th>Cluster Produk</th>
                                 <th>Jenis Produk</th>
                                 <th>Nama Produk</th>
-                                <th>Stok Kardus</th>
-                                <th>Stok Satuan</th>
+                                <th>Stok Awal</th>
+                                <th>Terjual</th>
+                                <th>Stok Akhir</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -64,10 +69,13 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="kode" class="col-sm-12 control-label">Kode Produk</label>
+                                    <label for="nomor" class="col-sm-12 control-label">Jenis Produk</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="kode_produk" name="kode_produk"
-                                            value="" required>
+                                        <select class="selectpicker form-control" size="5" id="id_jenis" name="id_jenis"  data-live-search="true">
+                                            @foreach ($jeniss as $jenis) 
+                                            <option value="{{$jenis -> id}}"  data-tokens="{{$jenis -> nama_jenis}}">{{$jenis -> nama_jenis}}</option>
+                                            @endforeach
+                                        </select>                                          
                                     </div>
                                 </div>
 
@@ -83,14 +91,6 @@
                                     <label for="stok_kardus" class="col-sm-12 control-label">Stok Kardus</label>
                                     <div class="col-sm-12">
                                         <input type="number" class="form-control" id="stok_kardus" name="stok_kardus"
-                                            value="" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="stok_satuan" class="col-sm-12 control-label">Stok Satuan</label>
-                                    <div class="col-sm-12">
-                                        <input type="number" class="form-control" id="stok_satuan" name="stok_satuan"
                                             value="" required>
                                     </div>
                                 </div>
@@ -140,6 +140,8 @@
 @endsection
 @section('script')
     <!-- LIBARARY JS -->
+    <script type="text/javascript" language="javascript"
+    src="{{ asset('vendor/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -193,20 +195,28 @@
                         name: 'no_produk'
                     },
                     {
-                        data: 'kode_produk',
-                        name: 'kode_produk'
+                        data: 'cluster',
+                        name: 'cluster'
+                    },
+                    {
+                        data: 'nama_jenis',
+                        name: 'nama_jenis'
                     },
                     {
                         data: 'nama_produk',
                         name: 'nama_produk'
                     },
                     {
-                        data: 'stok_kardus',
-                        name: 'stok_kardus'
+                        data: 'stok_awal',
+                        name: 'stok_awal'
                     },
                     {
-                        data: 'stok_satuan',
-                        name: 'stok_satuan'
+                        data: 'terjual',
+                        name: 'terjual'
+                    },
+                    {
+                        data: 'stok_kardus',
+                        name: 'stok_kardus'
                     },
                     {
                         data: 'action',
@@ -262,10 +272,9 @@
                 //set value masing-masing id berdasarkan data yg diperoleh dari ajax get request diatas               
                 $('#id').val(data.id);
                 $('#no_produk').val(data.no_produk);
-                $('#kode_produk').val(data.kode_produk);
+                $('#id_jenis').val(data.id_jenis);
                 $('#nama_produk').val(data.nama_produk);
                 $('#stok_kardus').val(data.stok_kardus);
-                $('#stok_satuan').val(data.stok_satuan);
             })
         });
         //jika klik class delete (yang ada pada tombol delete) maka tampilkan modal konfirmasi hapus maka

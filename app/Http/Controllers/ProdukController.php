@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
+use Carbon\Carbon;
+use App\Models\Jenis;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 
@@ -24,7 +27,10 @@ class ProdukController extends Controller
      */
     public function index(Request $request)
     {
-        $produks = Produk::all()->sortDesc();
+        $jeniss = Jenis::all();
+        $produks = Produk::LeftJoin("jenis", function ($join) {
+            $join->on("jenis.id", "=", "id_jenis");
+            })->select('produks.*', 'jenis.nama_jenis')->orderBy('created_at', 'desc')->get();
         if($request->ajax()){
             return datatables()->of($produks)
                         ->addColumn('action', function($data){
@@ -38,7 +44,36 @@ class ProdukController extends Controller
                         ->make(true);
         }
 
-        return view('produk');
+        return view('produk',['jeniss'=>$jeniss]);
+
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function pimpinan(Request $request)
+    {
+        $jeniss = Jenis::all();
+        $produks = Produk::LeftJoin("jenis", function ($join) {
+            $join->on("jenis.id", "=", "id_jenis");
+            })->select('produks.*', 'jenis.nama_jenis')->orderBy('created_at', 'desc')->get();
+        if($request->ajax()){
+            return datatables()->of($produks)
+                        ->addColumn('action', function($data){
+                            $button = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$data->id.'" data-original-title="Edit" class="edit btn btn-info btn-sm edit-post">Edit</a>';
+                            $button .= '&nbsp;&nbsp;';
+                            $button .= '<button type="button" name="delete" id="'.$data->id.'" class="delete btn btn-danger btn-sm"><i class="far fa-trash-alt"></i> Delete</button>';     
+                            return $button;
+                        })
+                        ->rawColumns(['action'])
+                        ->addIndexColumn()
+                        ->make(true);
+        }
+
+        return view('pimpinan.produk',['jeniss'=>$jeniss]);
 
     }
 
@@ -56,10 +91,10 @@ class ProdukController extends Controller
         $post   =   Produk::updateOrCreate(['id' => $id],
                     [
                         'no_produk' => $request->no_produk,
-                        'kode_produk' => $request->kode_produk,
+                        'id_jenis' => $request->id_jenis,
                         'nama_produk' => $request->nama_produk,
                         'stok_kardus' => $request->stok_kardus,
-                        'stok_satuan' => $request->stok_satuan,
+                        'stok_awal' => $request->stok_kardus,
                     ]); 
 
         return response()->json($post);
@@ -89,5 +124,17 @@ class ProdukController extends Controller
         $post = Produk::where('id',$id)->delete();
      
         return response()->json($post);
+    }
+
+    public function cetak_pdf()
+    {
+        
+        $currentTime = Carbon::now();
+        $month = $currentTime->month;
+        $tampil_produk = Produk::whereMonth('created_at', $month)->get();
+
+    	$pdf = PDF::loadview('cetakProduk',['tampil_produk'=>$tampil_produk]);
+    	return $pdf->stream();
+        
     }
 }
