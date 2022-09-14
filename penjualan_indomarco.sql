@@ -166,11 +166,11 @@ CREATE TABLE `produks` (
 --
 
 INSERT INTO `produks` (`id`, `no_produk`, `id_jenis`, `nama_produk`, `stok_awal`, `terjual`, `stok_kardus`, `cluster`, `created_at`, `updated_at`) VALUES
-(1, 101138, 3, 'Mi Instan Ind. Goreng Special', 300, 269, 31, 'C2', '2022-07-08 23:54:59', '2022-07-10 11:13:01'),
-(2, 155032, 4, 'Ichi Ocha Teh Melati 350 ML', 3000, 2740, 260, 'C1', '2022-07-08 23:55:58', '2022-07-10 11:13:03'),
-(3, 420051, 5, 'Asahi Sarden Saus Pedas 155Gr', 20, 3, 17, 'C2', '2022-07-08 23:56:50', '2022-07-10 11:13:03'),
-(4, 101466, 1, 'Bubur Bayi SUN BC Beras Merah Ekonomis', 24, 15, 9, 'C2', '2022-07-08 23:57:50', '2022-07-10 11:13:03'),
-(5, 424931, 5, 'Racik Bumbu Spesial Opor Ayam 45 Gr', 40, 38, 2, 'C2', '2022-07-08 23:59:01', '2022-07-10 11:13:03');
+(1, 101138, 3, 'Mi Instan Ind. Goreng Special', 300, 269, 31, 'C2', '2022-09-08 23:54:59', '2022-07-10 11:13:01'),
+(2, 155032, 4, 'Ichi Ocha Teh Melati 350 ML', 3000, 2740, 260, 'C1', '2022-09-08 23:55:58', '2022-07-10 11:13:03'),
+(3, 420051, 5, 'Asahi Sarden Saus Pedas 155Gr', 20, 3, 17, 'C2', '2022-09-08 23:56:50', '2022-07-10 11:13:03'),
+(4, 101466, 1, 'Bubur Bayi SUN BC Beras Merah Ekonomis', 24, 15, 9, 'C2', '2022-09-08 23:57:50', '2022-07-10 11:13:03'),
+(5, 424931, 5, 'Racik Bumbu Spesial Opor Ayam 45 Gr', 40, 38, 2, 'C2', '2022-09-08 23:59:01', '2022-07-10 11:13:03');
 
 -- --------------------------------------------------------
 
